@@ -27,6 +27,7 @@ public class Player {
   private Vector2 renderPos;
 
   private State currentState;
+  private float x, y;
 
   public Player(int x, int y) {
     if (!MapManager.isWalkable(x, y)) {
@@ -89,5 +90,13 @@ public class Player {
   public void dispose() {
     walkSheet.dispose();
     deathSheet.dispose();
+  }
+
+  public float getX() {
+    return x;
+  }
+
+  public float getY() {
+      return y;
   }
 }

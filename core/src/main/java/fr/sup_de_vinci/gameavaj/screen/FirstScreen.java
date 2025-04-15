@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -14,7 +15,12 @@ import fr.sup_de_vinci.gameavaj.enemy.EnemyController;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyFactory;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyRenderer;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
+import fr.sup_de_vinci.gameavaj.map.Dot;
 import fr.sup_de_vinci.gameavaj.player.Player;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class FirstScreen implements Screen {
     private static final int NUM_ENEMIES = 6;
@@ -30,6 +36,10 @@ public class FirstScreen implements Screen {
 
     private Player player;
 
+    private List<Dot> dots;
+    private BitmapFont font;
+    private int score = 0;
+
     @Override
     public void show() {
         batch = new SpriteBatch();
@@ -37,9 +47,12 @@ public class FirstScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.zoom = 2f;
-
         viewport = new FitViewport(800, 600, camera);
         centerCameraOnMap();
+
+        font = new BitmapFont();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(2.5f);
 
         // Init enemies
         enemyControllers = new EnemyController[NUM_ENEMIES];
@@ -52,6 +65,16 @@ public class FirstScreen implements Screen {
 
         // Init player
         player = new Player(10, 5);
+
+        // Init dots
+        dots = new ArrayList<>();
+        for (int y = 0; y < MapManager.MAP.length; y++) {
+            for (int x = 0; x < MapManager.MAP[0].length; x++) {
+                if (MapManager.MAP[y][x] == 0) {
+                    dots.add(new Dot(x, y));
+                }
+            }
+        }
     }
 
     @Override
@@ -63,6 +86,7 @@ public class FirstScreen implements Screen {
         }
 
         player.update(delta);
+        checkDotCollision();
 
         if (!player.isDead()) {
             for (EnemyController controller : enemyControllers) {
@@ -78,6 +102,24 @@ public class FirstScreen implements Screen {
         drawGameObjects(delta);
     }
 
+    private void checkDotCollision() {
+        float px = player.getX() + MapManager.TILE_SIZE / 2f;
+        float py = player.getY() + MapManager.TILE_SIZE / 2f;
+        float collisionDistance = MapManager.TILE_SIZE / 2f;
+
+        Iterator<Dot> iterator = dots.iterator();
+        while (iterator.hasNext()) {
+            Dot dot = iterator.next();
+            float dx = dot.getCenterX() - px;
+            float dy = dot.getCenterY() - py;
+
+            if (dx * dx + dy * dy < collisionDistance * collisionDistance) {
+                iterator.remove();
+                score += 10;
+            }
+        }
+    }
+
     private void clearScreen() {
         Gdx.gl.glClearColor(0.7f, 0.8f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -86,9 +128,10 @@ public class FirstScreen implements Screen {
     private void drawMap() {
         shapeRenderer.setProjectionMatrix(camera.combined);
         int offset = (MapManager.TILE_SIZE - CORRIDOR_SIZE) / 2;
-
-        // Draw filled map
+    
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+    
+        // 1. D'abord les murs et couloirs
         for (int y = 0; y < MapManager.MAP.length; y++) {
             for (int x = 0; x < MapManager.MAP[0].length; x++) {
                 boolean isWall = MapManager.MAP[y][x] == 1;
@@ -100,9 +143,17 @@ public class FirstScreen implements Screen {
                         isWall ? MapManager.TILE_SIZE : CORRIDOR_SIZE);
             }
         }
+    
+        // 2. Ensuite les pastilles (dots) pour ne pas qu'elles soient recouvertes
+        shapeRenderer.setColor(Color.GREEN);
+        float radius = 6f;
+        for (Dot dot : dots) {
+            shapeRenderer.circle(dot.getCenterX(), dot.getCenterY(), radius);
+        }
+    
         shapeRenderer.end();
-
-        // Draw map grid
+    
+        // Optionnel : grille
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.GRAY);
         for (int y = 0; y < MapManager.MAP.length; y++) {
@@ -116,7 +167,7 @@ public class FirstScreen implements Screen {
         }
         shapeRenderer.end();
     }
-
+    
     private void drawGameObjects(float delta) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -124,6 +175,10 @@ public class FirstScreen implements Screen {
         for (EnemyRenderer renderer : enemyRenderers) {
             renderer.draw(batch, delta);
         }
+
+        font.draw(batch, "Score: " + score,
+                camera.position.x - 150,
+                camera.position.y + (MapManager.MAP.length * MapManager.TILE_SIZE / 2f) + 30);
 
         player.render(batch);
 
@@ -143,17 +198,9 @@ public class FirstScreen implements Screen {
         centerCameraOnMap();
     }
 
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
 
     @Override
     public void dispose() {
@@ -161,11 +208,9 @@ public class FirstScreen implements Screen {
             renderer.dispose();
         }
 
-        if (player != null)
-            player.dispose();
-        if (batch != null)
-            batch.dispose();
-        if (shapeRenderer != null)
-            shapeRenderer.dispose();
+        if (player != null) player.dispose();
+        if (batch != null) batch.dispose();
+        if (shapeRenderer != null) shapeRenderer.dispose();
+        if (font != null) font.dispose();
     }
 }

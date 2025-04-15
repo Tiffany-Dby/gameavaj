@@ -75,4 +75,21 @@ public class EnemyController {
         Collections.shuffle(dirs);
         enemy.setDirection(dirs.get(0));
     }
+
+    public class Dot {
+        public final int x, y;
+    
+        public Dot(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    
+        public float getCenterX() {
+            return x * MapManager.TILE_SIZE + MapManager.TILE_SIZE / 2f;
+        }
+    
+        public float getCenterY() {
+            return y * MapManager.TILE_SIZE + MapManager.TILE_SIZE / 2f;
+        }
+    }
 }
