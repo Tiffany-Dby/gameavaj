@@ -1,7 +1,7 @@
 package fr.sup_de_vinci.gameavaj.enemy;
 
+import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
-import fr.sup_de_vinci.gameavaj.utils.Direction;
 
 import java.util.*;
 
@@ -12,6 +12,10 @@ public class EnemyController {
     public EnemyController(Enemy enemy) {
         this.enemy = enemy;
         randomDirection();
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
     }
 
     public void update(float deltaTime) {
@@ -33,7 +37,8 @@ public class EnemyController {
         List<Direction> options = new ArrayList<>();
 
         for (Direction dir : Direction.values()) {
-            if (dir == enemy.getDirection().getOpposite()) continue;
+            if (dir == enemy.getDirection().getOpposite())
+                continue;
 
             int nx = enemy.getCellX() + (int) getDX(dir);
             int ny = enemy.getCellY() + (int) getDY(dir);
@@ -52,8 +57,8 @@ public class EnemyController {
     }
 
     private boolean willHitWall(Direction dir) {
-        int nextX = (int)((enemy.getX() + getDX(dir) * MapManager.TILE_SIZE) / MapManager.TILE_SIZE);
-        int nextY = (int)((enemy.getY() + getDY(dir) * MapManager.TILE_SIZE) / MapManager.TILE_SIZE);
+        int nextX = (int) ((enemy.getX() + getDX(dir) * MapManager.TILE_SIZE) / MapManager.TILE_SIZE);
+        int nextY = (int) ((enemy.getY() + getDY(dir) * MapManager.TILE_SIZE) / MapManager.TILE_SIZE);
         return !MapManager.isWalkable(nextX, nextY);
     }
 

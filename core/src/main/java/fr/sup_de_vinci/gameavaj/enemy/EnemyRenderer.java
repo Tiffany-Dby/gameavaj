@@ -30,10 +30,20 @@ public class EnemyRenderer {
         Animation<TextureRegion> currentAnim = walkDown;
 
         switch (enemy.getDirection()) {
-            case UP: currentAnim = walkUp; break;
-            case DOWN: currentAnim = walkDown; break;
-            case LEFT: currentAnim = walkLeft; break;
-            case RIGHT: currentAnim = walkRight; break;
+            case UP:
+                currentAnim = walkUp;
+                break;
+            case DOWN:
+                currentAnim = walkDown;
+                break;
+            case LEFT:
+                currentAnim = walkLeft;
+                break;
+            case RIGHT:
+                currentAnim = walkRight;
+                break;
+            case NONE:
+                break;
         }
 
         TextureRegion currentFrame = currentAnim.getKeyFrame(stateTime, true);
