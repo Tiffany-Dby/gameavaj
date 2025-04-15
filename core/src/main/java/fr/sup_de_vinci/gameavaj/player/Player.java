@@ -13,7 +13,8 @@ import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 
 public class Player {
-  private static final String SPRITE_PATH = "player-walk.png";
+  private static final String WALK_SPRITE_PATH = "player-walk.png";
+  private static final String DEATH_SPRITE_PATH = "player-death.png";
   private static final int FRAME_WIDTH = 64;
   private static final int FRAME_HEIGHT = 64;
   private static final float SPEED = 100f;
@@ -21,7 +22,9 @@ public class Player {
   private static final float SNAP_THRESHOLD = 1f;
 
   private final Texture walkSheet;
+  private final Texture deathSheet;
   private final EnumMap<Direction, Animation<TextureRegion>> animations = new EnumMap<>(Direction.class);
+  private final EnumMap<Direction, Animation<TextureRegion>> deathAnimations = new EnumMap<>(Direction.class);
   private Animation<TextureRegion> currentAnimation;
 
   private Direction direction = Direction.DOWN;
@@ -33,28 +36,44 @@ public class Player {
   private int tileX, tileY;
   private int targetTileX, targetTileY;
   private boolean isMovingToTile = false;
+  private boolean isDead = false;
+  private boolean hasPlayedDeathAnimation = false;
 
-  public Player(float x, float y) {
-    tileX = (int) (x / MapManager.TILE_SIZE);
-    tileY = (int) (y / MapManager.TILE_SIZE);
+  public Player(int x, int y) {
+    if (!MapManager.isWalkable(x, y)) {
+      throw new IllegalArgumentException("Invalid starting tile — not walkable.");
+    }
+
+    tileX = x;
+    tileY = y;
     targetTileX = tileX;
     targetTileY = tileY;
 
     this.x = tileX * MapManager.TILE_SIZE;
     this.y = tileY * MapManager.TILE_SIZE;
 
-    walkSheet = new Texture(SPRITE_PATH);
+    walkSheet = new Texture(WALK_SPRITE_PATH);
+    deathSheet = new Texture(DEATH_SPRITE_PATH);
     initializeAnimations();
     currentAnimation = animations.get(direction);
   }
 
   private void initializeAnimations() {
     TextureRegion[][] frames = TextureRegion.split(walkSheet, FRAME_WIDTH, FRAME_HEIGHT);
-
     animations.put(Direction.DOWN, new Animation<>(FRAME_DURATION, frames[0]));
     animations.put(Direction.UP, new Animation<>(FRAME_DURATION, frames[1]));
     animations.put(Direction.LEFT, new Animation<>(FRAME_DURATION, frames[2]));
     animations.put(Direction.RIGHT, new Animation<>(FRAME_DURATION, frames[3]));
+
+    TextureRegion[][] deathFrames = TextureRegion.split(deathSheet, FRAME_WIDTH, FRAME_HEIGHT);
+    deathAnimations.put(Direction.DOWN, new Animation<>(FRAME_DURATION, deathFrames[0]));
+    deathAnimations.put(Direction.UP, new Animation<>(FRAME_DURATION, deathFrames[1]));
+    deathAnimations.put(Direction.LEFT, new Animation<>(FRAME_DURATION, deathFrames[2]));
+    deathAnimations.put(Direction.RIGHT, new Animation<>(FRAME_DURATION, deathFrames[3]));
+
+    for (Animation<TextureRegion> anim : deathAnimations.values()) {
+      anim.setPlayMode(Animation.PlayMode.NORMAL);
+    }
   }
 
   private void handleInput() {
@@ -87,7 +106,6 @@ public class Player {
 
     float dx = targetX - x;
     float dy = targetY - y;
-
     float distance = SPEED * deltaTime;
 
     if (Math.abs(dx) > 0)
@@ -95,8 +113,9 @@ public class Player {
     if (Math.abs(dy) > 0)
       y += Math.signum(dy) * Math.min(Math.abs(dy), distance);
 
-    if (Math.abs(dx) <= SNAP_THRESHOLD && Math.abs(dy) <= SNAP_THRESHOLD)
+    if (Math.abs(dx) <= SNAP_THRESHOLD && Math.abs(dy) <= SNAP_THRESHOLD) {
       snapToTile(targetX, targetY);
+    }
   }
 
   private void snapToTile(float targetX, float targetY) {
@@ -132,30 +151,66 @@ public class Player {
       return Direction.UP;
     if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
       return Direction.DOWN;
-
     return Direction.NONE;
   }
 
-  public void update(float deltaTime) {
-    handleInput();
-    updateMovement(deltaTime);
+  public boolean isDead() {
+    return isDead;
+  }
 
-    if (moving) {
+  public int getTileX() {
+    return tileX;
+  }
+
+  public int getTileY() {
+    return tileY;
+  }
+
+  public void die() {
+    if (isDead || hasPlayedDeathAnimation)
+      return;
+
+    isDead = true;
+    moving = false;
+    isMovingToTile = false;
+    stateTime = 0f;
+
+    currentAnimation = deathAnimations.get(direction);
+  }
+
+  public void update(float deltaTime) {
+    if (isDead) {
       stateTime += deltaTime;
+
+      if (!hasPlayedDeathAnimation && currentAnimation.isAnimationFinished(stateTime)) {
+        hasPlayedDeathAnimation = true;
+      }
+      return;
     }
 
+    handleInput();
+    updateMovement(deltaTime);
+    if (moving)
+      stateTime += deltaTime;
     currentAnimation = animations.get(direction);
   }
 
   public void render(SpriteBatch batch) {
-    TextureRegion frame = moving
-        ? currentAnimation.getKeyFrame(stateTime, true)
-        : currentAnimation.getKeyFrame(0);
+    TextureRegion frame;
+
+    if (isDead) {
+      frame = currentAnimation.getKeyFrame(stateTime, false);
+    } else {
+      frame = moving
+          ? currentAnimation.getKeyFrame(stateTime, true)
+          : currentAnimation.getKeyFrame(0);
+    }
 
     batch.draw(frame, x, y);
   }
 
   public void dispose() {
     walkSheet.dispose();
+    deathSheet.dispose();
   }
 }

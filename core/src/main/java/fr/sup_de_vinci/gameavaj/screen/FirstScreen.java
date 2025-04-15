@@ -17,7 +17,7 @@ import fr.sup_de_vinci.gameavaj.map.MapManager;
 import fr.sup_de_vinci.gameavaj.player.Player;
 
 public class FirstScreen implements Screen {
-    private static final int NUM_ENEMIES = 3;
+    private static final int NUM_ENEMIES = 6;
     private static final int CORRIDOR_SIZE = 40;
 
     private SpriteBatch batch;
@@ -51,7 +51,7 @@ public class FirstScreen implements Screen {
         }
 
         // Init player
-        player = new Player(100, 100);
+        player = new Player(10, 5);
     }
 
     @Override
@@ -63,6 +63,16 @@ public class FirstScreen implements Screen {
         }
 
         player.update(delta);
+
+        if (!player.isDead()) {
+            for (EnemyController controller : enemyControllers) {
+                Enemy enemy = controller.getEnemy();
+                if (enemy.getCellX() == player.getTileX() && enemy.getCellY() == player.getTileY()) {
+                    player.die();
+                    break;
+                }
+            }
+        }
 
         drawMap();
         drawGameObjects(delta);

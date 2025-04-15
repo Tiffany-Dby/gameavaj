@@ -14,6 +14,10 @@ public class EnemyController {
         randomDirection();
     }
 
+    public Enemy getEnemy() {
+        return enemy;
+    }
+
     public void update(float deltaTime) {
         if (enemy.isCenteredOnTile()) {
             chooseNewDirection();
