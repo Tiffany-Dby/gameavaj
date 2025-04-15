@@ -14,4 +14,11 @@ public class Position {
         .scl(MapManager.TILE_SIZE)
         .add(halfTile, halfTile);
   }
+
+  public static boolean isCenteredOnTile(Vector2 renderPos) {
+    float half = MapManager.TILE_SIZE / 2f;
+    float xCenter = ((int) (renderPos.x / MapManager.TILE_SIZE)) * MapManager.TILE_SIZE + half;
+    float yCenter = ((int) (renderPos.y / MapManager.TILE_SIZE)) * MapManager.TILE_SIZE + half;
+    return renderPos.dst2(xCenter - half, yCenter - half) < 0.1f;
+  }
 }

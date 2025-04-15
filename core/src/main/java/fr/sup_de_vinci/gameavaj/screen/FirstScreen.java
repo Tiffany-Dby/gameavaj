@@ -1,5 +1,8 @@
 package fr.sup_de_vinci.gameavaj.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -12,9 +15,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fr.sup_de_vinci.gameavaj.collectibles.DotManager;
 import fr.sup_de_vinci.gameavaj.enemy.Enemy;
-import fr.sup_de_vinci.gameavaj.enemy.EnemyController;
+// import fr.sup_de_vinci.gameavaj.enemy.EnemyController;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyFactory;
-import fr.sup_de_vinci.gameavaj.enemy.EnemyRenderer;
+// import fr.sup_de_vinci.gameavaj.enemy.EnemyRenderer;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 import fr.sup_de_vinci.gameavaj.player.Player;
 
@@ -27,8 +30,9 @@ public class FirstScreen implements Screen {
     private OrthographicCamera camera;
     private FitViewport viewport;
 
-    private EnemyController[] enemyControllers;
-    private EnemyRenderer[] enemyRenderers;
+    // private EnemyController[] enemyControllers;
+    // private EnemyRenderer[] enemyRenderers;
+    private List<Enemy> enemies;
 
     private Player player;
 
@@ -61,12 +65,16 @@ public class FirstScreen implements Screen {
         }
 
         // Init enemies
-        enemyControllers = new EnemyController[NUM_ENEMIES];
-        enemyRenderers = new EnemyRenderer[NUM_ENEMIES];
+        // enemyControllers = new EnemyController[NUM_ENEMIES];
+        // enemyRenderers = new EnemyRenderer[NUM_ENEMIES];
+        // for (int i = 0; i < NUM_ENEMIES; i++) {
+        // Enemy enemy = EnemyFactory.spawnRandomEnemy();
+        // enemyControllers[i] = new EnemyController(enemy);
+        // enemyRenderers[i] = new EnemyRenderer(enemy);
+        // }
+        enemies = new ArrayList<>();
         for (int i = 0; i < NUM_ENEMIES; i++) {
-            Enemy enemy = EnemyFactory.spawnRandomEnemy();
-            enemyControllers[i] = new EnemyController(enemy);
-            enemyRenderers[i] = new EnemyRenderer(enemy);
+            enemies.add(EnemyFactory.spawnRandomEnemy());
         }
 
         // Init player
@@ -79,18 +87,27 @@ public class FirstScreen implements Screen {
 
         dotManager.update(player.getTileCoord(), player.isCenteredOnTile());
 
-        for (EnemyController controller : enemyControllers) {
-            controller.update(delta);
+        // for (EnemyController controller : enemyControllers) {
+        // controller.update(delta);
+        // }
+        for (Enemy enemy : enemies) {
+            enemy.update(delta);
         }
 
         player.update(delta);
 
         if (!player.isDead()) {
-            for (EnemyController controller : enemyControllers) {
-                Enemy enemy = controller.getEnemy();
-                if (enemy.getCellX() == player.getTileX() && enemy.getCellY() == player.getTileY()) {
+            // for (EnemyController controller : enemyControllers) {
+            // Enemy enemy = controller.getEnemy();
+            // if (enemy.getCellX() == player.getTileX() && enemy.getCellY() ==
+            // player.getTileY()) {
+            // player.die();
+            // break;
+            // }
+            // }
+            for (Enemy enemy : enemies) {
+                if (enemy.getTileX() == player.getTileX() && enemy.getTileY() == player.getTileY()) {
                     player.die();
-                    break;
                 }
             }
         }
@@ -130,8 +147,11 @@ public class FirstScreen implements Screen {
 
         dotManager.render(batch);
 
-        for (EnemyRenderer renderer : enemyRenderers) {
-            renderer.draw(batch, delta);
+        // for (EnemyRenderer renderer : enemyRenderers) {
+        // renderer.draw(batch, delta);
+        // }
+        for (Enemy enemy : enemies) {
+            enemy.render(batch);
         }
 
         font.draw(batch, "Score: " + dotManager.getScore(),
@@ -170,8 +190,11 @@ public class FirstScreen implements Screen {
 
     @Override
     public void dispose() {
-        for (EnemyRenderer renderer : enemyRenderers) {
-            renderer.dispose();
+        // for (EnemyRenderer renderer : enemyRenderers) {
+        // renderer.dispose();
+        // }
+        for (Enemy enemy : enemies) {
+            enemy.dispose();
         }
 
         if (player != null)
