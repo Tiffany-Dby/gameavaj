@@ -75,6 +75,10 @@ public class Player {
     return (int) (this.renderPos.y / MapManager.TILE_SIZE);
   }
 
+  public Vector2 getRenderPos() {
+    return renderPos;
+  }
+
   public void die() {
     this.currentState = new StateDying(deathAnimations, this.currentState.getDirection());
   }
@@ -97,6 +101,6 @@ public class Player {
   }
 
   public float getY() {
-      return y;
+    return y;
   }
 }
