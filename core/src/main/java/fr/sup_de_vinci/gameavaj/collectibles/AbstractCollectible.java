@@ -2,35 +2,31 @@ package fr.sup_de_vinci.gameavaj.collectibles;
 
 import com.badlogic.gdx.math.Vector2;
 
+import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 
 public abstract class AbstractCollectible implements Collectible {
-  protected final Vector2 tilePos;
+  protected final Coord tileCoord;
   protected boolean collected = false;
 
-  public AbstractCollectible(float tileX, float tileY) {
-    this.tilePos = new Vector2(tileX, tileY);
+  public AbstractCollectible(int tileX, int tileY) {
+    this.tileCoord = new Coord(tileX, tileY);
   }
 
-  protected Vector2 getCenteredPixelPosition(float spriteSize) {
+  public Vector2 getCenteredPixelPosition(float spriteSize) {
     float offset = (MapManager.TILE_SIZE - spriteSize) / 2f;
 
-    return tilePos.cpy()
+    return new Vector2(tileCoord.getX(), tileCoord.getY())
         .scl(MapManager.TILE_SIZE)
         .add(offset, offset);
   }
 
   @Override
-  public void update(Vector2 playerPos) {
+  public void update(Coord playerCoord) {
     if (collected)
       return;
 
-    float halfTileSize = MapManager.TILE_SIZE / 2f;
-
-    Vector2 dotCenter = getCenteredPixelPosition(0);
-    Vector2 playerCenter = playerPos.cpy().add(halfTileSize, halfTileSize);
-
-    if (playerCenter.dst2(dotCenter) < 1f) {
+    if (playerCoord.getX() == tileCoord.getX() && playerCoord.getY() == tileCoord.getY()) {
       collect();
     }
   }

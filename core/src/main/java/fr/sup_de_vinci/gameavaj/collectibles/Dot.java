@@ -9,7 +9,7 @@ public class Dot extends AbstractCollectible {
     private static final Texture texture = new Texture("dot.png");
     private static final int SIZE = 40;
 
-    public Dot(float x, float y) {
+    public Dot(int x, int y) {
         super(x, y);
     }
 

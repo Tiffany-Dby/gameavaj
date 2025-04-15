@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
+import fr.sup_de_vinci.gameavaj.utils.Position;
 
 public class Player {
   private static final String WALK_SPRITE_PATH = "player-walk.png";
@@ -75,8 +76,17 @@ public class Player {
     return (int) (this.renderPos.y / MapManager.TILE_SIZE);
   }
 
-  public Vector2 getRenderPos() {
-    return renderPos;
+  public Coord getTileCoord() {
+    return new Coord(getTileX(), getTileY());
+  }
+
+  public boolean isCenteredOnTile() {
+    float halfTile = MapManager.TILE_SIZE / 2f;
+
+    Vector2 playerCenter = renderPos.cpy().add(halfTile, halfTile);
+    Vector2 tileCenter = Position.getTileCenter(getTileCoord());
+
+    return playerCenter.dst2(tileCenter) < 0.1f;
   }
 
   public void die() {

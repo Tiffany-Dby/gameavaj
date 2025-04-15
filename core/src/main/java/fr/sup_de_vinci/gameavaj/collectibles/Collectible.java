@@ -1,10 +1,11 @@
 package fr.sup_de_vinci.gameavaj.collectibles;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+
+import fr.sup_de_vinci.gameavaj.enums.Coord;
 
 public interface Collectible {
-  void update(Vector2 playerPos);
+  void update(Coord playerCoord);
 
   void render(SpriteBatch batch);
 

@@ -77,7 +77,7 @@ public class FirstScreen implements Screen {
     public void render(float delta) {
         clearScreen();
 
-        dotManager.update(player.getRenderPos());
+        dotManager.update(player.getTileCoord(), player.isCenteredOnTile());
 
         for (EnemyController controller : enemyControllers) {
             controller.update(delta);
