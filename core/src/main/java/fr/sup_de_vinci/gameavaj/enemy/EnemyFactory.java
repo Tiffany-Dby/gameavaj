@@ -2,8 +2,8 @@ package fr.sup_de_vinci.gameavaj.enemy;
 
 import java.util.Random;
 
+import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
-import fr.sup_de_vinci.gameavaj.utils.Direction;
 
 public class EnemyFactory {
 

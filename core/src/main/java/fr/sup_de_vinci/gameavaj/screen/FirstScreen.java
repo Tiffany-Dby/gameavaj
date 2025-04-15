@@ -9,12 +9,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import fr.sup_de_vinci.gameavaj.Player;
 import fr.sup_de_vinci.gameavaj.enemy.Enemy;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyController;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyFactory;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyRenderer;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
+import fr.sup_de_vinci.gameavaj.player.Player;
 
 public class FirstScreen implements Screen {
     private static final int NUM_ENEMIES = 3;

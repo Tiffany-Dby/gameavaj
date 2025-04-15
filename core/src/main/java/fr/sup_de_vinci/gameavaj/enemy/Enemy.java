@@ -1,7 +1,7 @@
 package fr.sup_de_vinci.gameavaj.enemy;
 
+import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
-import fr.sup_de_vinci.gameavaj.utils.Direction;
 
 public class Enemy {
 
@@ -17,11 +17,11 @@ public class Enemy {
     }
 
     public int getCellX() {
-        return (int)(x / MapManager.TILE_SIZE);
+        return (int) (x / MapManager.TILE_SIZE);
     }
 
     public int getCellY() {
-        return (int)(y / MapManager.TILE_SIZE);
+        return (int) (y / MapManager.TILE_SIZE);
     }
 
     public void snapToGrid() {

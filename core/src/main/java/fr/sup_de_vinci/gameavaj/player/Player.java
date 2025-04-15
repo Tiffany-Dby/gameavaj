@@ -1,4 +1,4 @@
-package fr.sup_de_vinci.gameavaj;
+package fr.sup_de_vinci.gameavaj.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
