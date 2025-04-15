@@ -1,7 +1,7 @@
 package fr.sup_de_vinci.gameavaj.enums;
 
 public enum Direction {
-    UP, RIGHT, DOWN, LEFT;
+    UP, RIGHT, DOWN, LEFT, NONE;
 
     public Direction getOpposite() {
         switch (this) {
@@ -13,8 +13,10 @@ public enum Direction {
                 return RIGHT;
             case RIGHT:
                 return LEFT;
+            case NONE:
+            default:
+                return NONE;
         }
-        return this;
     }
 
     public Direction turnLeft() {
@@ -27,8 +29,10 @@ public enum Direction {
                 return RIGHT;
             case RIGHT:
                 return UP;
+            case NONE:
+            default:
+                return NONE;
         }
-        return this;
     }
 
     public Direction turnRight() {
@@ -41,7 +45,9 @@ public enum Direction {
                 return LEFT;
             case LEFT:
                 return UP;
+            case NONE:
+            default:
+                return NONE;
         }
-        return this;
     }
 }
