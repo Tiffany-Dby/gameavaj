@@ -1,7 +1,14 @@
 package fr.sup_de_vinci.gameavaj.enums;
 
 public enum Direction {
-    UP, RIGHT, DOWN, LEFT, NONE;
+    UP(0, 1), RIGHT(1, 0), DOWN(0, -1), LEFT(-1, 0), NONE(0, 0);
+
+    private int dx, dy;
+
+    private Direction(int dx, int dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
 
     public Direction getOpposite() {
         switch (this) {
@@ -49,5 +56,9 @@ public enum Direction {
             default:
                 return NONE;
         }
+    }
+
+    public Coord getNext(Coord pos) {
+        return pos.clone().move(this.dx, this.dy);
     }
 }
