@@ -15,9 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fr.sup_de_vinci.gameavaj.collectibles.DotManager;
 import fr.sup_de_vinci.gameavaj.enemy.Enemy;
-// import fr.sup_de_vinci.gameavaj.enemy.EnemyController;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyFactory;
-// import fr.sup_de_vinci.gameavaj.enemy.EnemyRenderer;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 import fr.sup_de_vinci.gameavaj.player.Player;
 
@@ -30,8 +28,6 @@ public class FirstScreen implements Screen {
     private OrthographicCamera camera;
     private FitViewport viewport;
 
-    // private EnemyController[] enemyControllers;
-    // private EnemyRenderer[] enemyRenderers;
     private List<Enemy> enemies;
 
     private Player player;
@@ -54,7 +50,7 @@ public class FirstScreen implements Screen {
         font.setColor(Color.BLACK);
         font.getData().setScale(2.5f);
 
-        // Init dots
+        // Init collectibles
         dotManager = new DotManager();
         for (int y = 0; y < MapManager.MAP.length; y++) {
             for (int x = 0; x < MapManager.MAP[0].length; x++) {
@@ -65,13 +61,6 @@ public class FirstScreen implements Screen {
         }
 
         // Init enemies
-        // enemyControllers = new EnemyController[NUM_ENEMIES];
-        // enemyRenderers = new EnemyRenderer[NUM_ENEMIES];
-        // for (int i = 0; i < NUM_ENEMIES; i++) {
-        // Enemy enemy = EnemyFactory.spawnRandomEnemy();
-        // enemyControllers[i] = new EnemyController(enemy);
-        // enemyRenderers[i] = new EnemyRenderer(enemy);
-        // }
         enemies = new ArrayList<>();
         for (int i = 0; i < NUM_ENEMIES; i++) {
             enemies.add(EnemyFactory.spawnRandomEnemy());
@@ -87,9 +76,6 @@ public class FirstScreen implements Screen {
 
         dotManager.update(player.getTileCoord(), player.isCenteredOnTile());
 
-        // for (EnemyController controller : enemyControllers) {
-        // controller.update(delta);
-        // }
         for (Enemy enemy : enemies) {
             enemy.update(delta);
         }
@@ -97,14 +83,6 @@ public class FirstScreen implements Screen {
         player.update(delta);
 
         if (!player.isDead()) {
-            // for (EnemyController controller : enemyControllers) {
-            // Enemy enemy = controller.getEnemy();
-            // if (enemy.getCellX() == player.getTileX() && enemy.getCellY() ==
-            // player.getTileY()) {
-            // player.die();
-            // break;
-            // }
-            // }
             for (Enemy enemy : enemies) {
                 if (enemy.getTileX() == player.getTileX() && enemy.getTileY() == player.getTileY()) {
                     player.die();
@@ -147,9 +125,6 @@ public class FirstScreen implements Screen {
 
         dotManager.render(batch);
 
-        // for (EnemyRenderer renderer : enemyRenderers) {
-        // renderer.draw(batch, delta);
-        // }
         for (Enemy enemy : enemies) {
             enemy.render(batch);
         }
@@ -190,9 +165,6 @@ public class FirstScreen implements Screen {
 
     @Override
     public void dispose() {
-        // for (EnemyRenderer renderer : enemyRenderers) {
-        // renderer.dispose();
-        // }
         for (Enemy enemy : enemies) {
             enemy.dispose();
         }

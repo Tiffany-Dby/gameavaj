@@ -3,7 +3,7 @@ package fr.sup_de_vinci.gameavaj.map;
 public class MapManager {
     public static final int TILE_SIZE = 64;
 
-    // 1 = mur, 0 = sol
+    // 1 = wall, 0 = ground
     public static final int[][] MAP = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
