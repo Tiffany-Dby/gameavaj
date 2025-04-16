@@ -6,6 +6,9 @@ public class Coord {
   private int x, y;
 
   public Coord(Vector2 v, float tileSize) {
+    if (tileSize <= 0) {
+      throw new IllegalArgumentException("Tile size can not be smaller or equal to 0.");
+    }
 
     this.x = (int) (v.x / tileSize);
     this.y = (int) (v.y / tileSize);
@@ -28,7 +31,7 @@ public class Coord {
     return this.y;
   }
 
-  Coord move(int dx, int dy) {
+  public Coord move(int dx, int dy) {
     this.x += dx;
     this.y += dy;
     return this;

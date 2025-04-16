@@ -13,4 +13,14 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+
+  testImplementation(platform('org.junit:junit-bom:5.12.2'))
+  testImplementation('org.junit.jupiter:junit-jupiter')
+  testRuntimeOnly('org.junit.platform:junit-platform-launcher')
 }
+
+test {
+  useJUnitPlatform()
+}
+
+sourceSets.test.java.srcDirs = ["src/test/"]
