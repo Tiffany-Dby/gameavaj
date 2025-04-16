@@ -1,4 +1,4 @@
-package fr.sup_de_vinci.gameavaj.player;
+package fr.sup_de_vinci.gameavaj.characters;
 
 import java.util.EnumMap;
 
@@ -18,7 +18,7 @@ public class StateDying extends State {
   }
 
   @Override
-  public State update(float deltaTime, Vector2 pos) {
+  public State update(CharacterController controller, float deltaTime, Vector2 pos) {
     this.stateTime += deltaTime;
     return this.getCurrentAnim().isAnimationFinished(stateTime)
         ? new StateDead(getAnims(), getDirection(), stateTime)

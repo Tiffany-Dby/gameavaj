@@ -14,23 +14,26 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fr.sup_de_vinci.gameavaj.collectibles.DotManager;
-import fr.sup_de_vinci.gameavaj.enemy.Enemy;
+import fr.sup_de_vinci.gameavaj.characters.Character;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyFactory;
+import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
-import fr.sup_de_vinci.gameavaj.player.Player;
+import fr.sup_de_vinci.gameavaj.player.PlayerController;
 
 public class FirstScreen implements Screen {
     private static final int NUM_ENEMIES = 6;
     private static final int CORRIDOR_SIZE = 40;
+    private static final String WALK_SPRITE_PATH = "player-walk.png";
+    private static final String DEATH_SPRITE_PATH = "player-death.png";
 
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
     private FitViewport viewport;
 
-    private List<Enemy> enemies;
+    private List<Character> enemies;
 
-    private Player player;
+    private Character player;
 
     private DotManager dotManager;
 
@@ -50,7 +53,6 @@ public class FirstScreen implements Screen {
         font.setColor(Color.BLACK);
         font.getData().setScale(2.5f);
 
-        // Init collectibles
         dotManager = new DotManager();
         for (int y = 0; y < MapManager.MAP.length; y++) {
             for (int x = 0; x < MapManager.MAP[0].length; x++) {
@@ -60,14 +62,15 @@ public class FirstScreen implements Screen {
             }
         }
 
-        // Init enemies
         enemies = new ArrayList<>();
         for (int i = 0; i < NUM_ENEMIES; i++) {
             enemies.add(EnemyFactory.spawnRandomEnemy());
         }
-
-        // Init player
-        player = new Player(10, 5);
+        player = new Character(
+                new PlayerController(),
+                new Coord(10, 5),
+                WALK_SPRITE_PATH,
+                DEATH_SPRITE_PATH);
     }
 
     @Override
@@ -76,14 +79,14 @@ public class FirstScreen implements Screen {
 
         dotManager.update(player.getTileCoord(), player.isCenteredOnTile());
 
-        for (Enemy enemy : enemies) {
+        for (Character enemy : enemies) {
             enemy.update(delta);
         }
 
         player.update(delta);
 
         if (!player.isDead()) {
-            for (Enemy enemy : enemies) {
+            for (Character enemy : enemies) {
                 if (enemy.getTileX() == player.getTileX() && enemy.getTileY() == player.getTileY()) {
                     player.die();
                 }
@@ -125,7 +128,7 @@ public class FirstScreen implements Screen {
 
         dotManager.render(batch);
 
-        for (Enemy enemy : enemies) {
+        for (Character enemy : enemies) {
             enemy.render(batch);
         }
 
@@ -165,7 +168,7 @@ public class FirstScreen implements Screen {
 
     @Override
     public void dispose() {
-        for (Enemy enemy : enemies) {
+        for (Character enemy : enemies) {
             enemy.dispose();
         }
 

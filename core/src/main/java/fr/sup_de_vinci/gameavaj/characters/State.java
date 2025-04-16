@@ -1,4 +1,4 @@
-package fr.sup_de_vinci.gameavaj.player;
+package fr.sup_de_vinci.gameavaj.characters;
 
 import java.util.EnumMap;
 
@@ -18,7 +18,7 @@ public abstract class State {
     this.direction = direction;
   }
 
-  protected EnumMap<Direction, Animation<TextureRegion>> getAnims() {
+  public EnumMap<Direction, Animation<TextureRegion>> getAnims() {
     return this.animations;
   }
 
@@ -26,11 +26,11 @@ public abstract class State {
     return this.animations.get(this.direction);
   }
 
-  protected Direction getDirection() {
+  public Direction getDirection() {
     return this.direction;
   }
 
-  public abstract State update(float deltaTime, Vector2 pos);
+  public abstract State update(CharacterController controller, float deltaTime, Vector2 pos);
 
   public abstract void render(SpriteBatch batch, Vector2 renderPos);
 

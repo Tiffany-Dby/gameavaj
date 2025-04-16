@@ -1,7 +1,6 @@
-package fr.sup_de_vinci.gameavaj.enemy;
+package fr.sup_de_vinci.gameavaj.characters;
 
 import java.util.EnumMap;
-import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,26 +24,13 @@ public class StateMoving extends State {
     this.target = target;
   }
 
-  private Direction findNextDirection(Coord current, Direction preferred) {
-    List<Direction> options = List.of(
-        preferred, preferred.turnLeft(), preferred.turnRight(), preferred.getOpposite());
-
-    for (Direction dir : options) {
-      Coord next = dir.getNext(current);
-      if (MapManager.isWalkable(next.getX(), next.getY())) {
-        return dir;
-      }
-    }
-
-    return Direction.NONE;
-  }
-
   @Override
-  public State update(float deltaTime, Vector2 pos) {
-    stateTime += deltaTime;
+  public State update(CharacterController controller, float deltaTime, Vector2 pos) {
 
-    float targetX = target.getX() * MapManager.TILE_SIZE;
-    float targetY = target.getY() * MapManager.TILE_SIZE;
+    this.stateTime += deltaTime;
+
+    float targetX = this.target.getX() * MapManager.TILE_SIZE;
+    float targetY = this.target.getY() * MapManager.TILE_SIZE;
 
     float dx = targetX - pos.x;
     float dy = targetY - pos.y;
@@ -56,22 +42,14 @@ public class StateMoving extends State {
       pos.y += Math.signum(dy) * Math.min(Math.abs(dy), distance);
 
     if (Math.abs(dx) <= SNAP_THRESHOLD && Math.abs(dy) <= SNAP_THRESHOLD) {
-      return new StateIdle(getAnims(), getDirection(), this.target);
+      return new StateIdle(this.getAnims(), this.getDirection());
     }
-
-    if (Math.abs(dx) <= SNAP_THRESHOLD && Math.abs(dy) <= SNAP_THRESHOLD) {
-      Coord current = new Coord(target.getX(), target.getY());
-      Direction nextDir = findNextDirection(current, getDirection());
-      Coord nextTarget = nextDir.getNext(current);
-
-      return new StateMoving(getAnims(), nextDir, nextTarget);
-    }
-
     return this;
   }
 
   @Override
   public void render(SpriteBatch batch, Vector2 renderPos) {
-    render(batch, renderPos, stateTime, true);
+    render(batch, renderPos, this.stateTime, true);
   }
+
 }

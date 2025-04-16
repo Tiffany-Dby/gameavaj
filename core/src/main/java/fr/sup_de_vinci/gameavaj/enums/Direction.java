@@ -3,6 +3,7 @@ package fr.sup_de_vinci.gameavaj.enums;
 public enum Direction {
     UP(0, 1), RIGHT(1, 0), DOWN(0, -1), LEFT(-1, 0), NONE(0, 0);
 
+    public final static Direction[] ALL = { Direction.DOWN, Direction.UP, Direction.LEFT, Direction.RIGHT };
     private int dx, dy;
 
     private Direction(int dx, int dy) {
