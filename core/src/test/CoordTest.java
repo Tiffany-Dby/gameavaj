@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import com.badlogic.gdx.math.Vector2;
 
-import fr.sup_de_vinci.gameavaj.enums.Coord;
+import fr.sup_de_vinci.gameavaj.utils.Coord;
 
 public class CoordTest {
 

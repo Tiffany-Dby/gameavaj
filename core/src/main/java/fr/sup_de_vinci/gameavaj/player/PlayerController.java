@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import fr.sup_de_vinci.gameavaj.characters.CharacterController;
 import fr.sup_de_vinci.gameavaj.characters.State;
 import fr.sup_de_vinci.gameavaj.characters.StateMoving;
-import fr.sup_de_vinci.gameavaj.enums.Coord;
-import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
+import fr.sup_de_vinci.gameavaj.utils.Coord;
+import fr.sup_de_vinci.gameavaj.utils.Direction;
 
 /**
  * Handles player input and determines the next state based on keyboard

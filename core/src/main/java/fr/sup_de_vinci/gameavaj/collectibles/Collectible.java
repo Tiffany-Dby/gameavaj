@@ -2,7 +2,7 @@ package fr.sup_de_vinci.gameavaj.collectibles;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import fr.sup_de_vinci.gameavaj.enums.Coord;
+import fr.sup_de_vinci.gameavaj.utils.Coord;
 
 /**
  * Represents a collectible item in the game world

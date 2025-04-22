@@ -16,9 +16,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import fr.sup_de_vinci.gameavaj.collectibles.DotManager;
 import fr.sup_de_vinci.gameavaj.characters.Character;
 import fr.sup_de_vinci.gameavaj.enemy.EnemyFactory;
-import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 import fr.sup_de_vinci.gameavaj.player.PlayerController;
+import fr.sup_de_vinci.gameavaj.utils.Coord;
 
 public class FirstScreen implements Screen {
     private static final int NUM_ENEMIES = 6;

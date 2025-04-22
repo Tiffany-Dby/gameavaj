@@ -3,8 +3,8 @@ package fr.sup_de_vinci.gameavaj.enemy;
 import java.util.Random;
 
 import fr.sup_de_vinci.gameavaj.characters.Character;
-import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
+import fr.sup_de_vinci.gameavaj.utils.Coord;
 
 /**
  * Factory class responsible for spawning enemy characters at random walkable

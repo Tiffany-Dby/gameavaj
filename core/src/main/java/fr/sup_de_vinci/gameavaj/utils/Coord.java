@@ -1,4 +1,4 @@
-package fr.sup_de_vinci.gameavaj.enums;
+package fr.sup_de_vinci.gameavaj.utils;
 
 import com.badlogic.gdx.math.Vector2;
 

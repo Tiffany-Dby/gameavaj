@@ -2,7 +2,6 @@ package fr.sup_de_vinci.gameavaj.utils;
 
 import com.badlogic.gdx.math.Vector2;
 
-import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 
 public class Position {

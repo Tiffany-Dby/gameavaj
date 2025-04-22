@@ -2,8 +2,8 @@ package fr.sup_de_vinci.gameavaj.collectibles;
 
 import com.badlogic.gdx.math.Vector2;
 
-import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
+import fr.sup_de_vinci.gameavaj.utils.Coord;
 
 /**
  * Abstract base class representing a collectible object placed on a tile in the
