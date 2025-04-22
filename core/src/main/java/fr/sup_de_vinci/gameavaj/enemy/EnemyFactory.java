@@ -6,10 +6,20 @@ import fr.sup_de_vinci.gameavaj.characters.Character;
 import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 
+/**
+ * Factory class responsible for spawning enemy characters at random walkable
+ * locations on the map
+ */
 public class EnemyFactory {
 
   private static final String SPRITE_PATH = "enemy-walk.png";
 
+  /**
+   * Spawns a new enemy {@link Character} at a random walkable position on the
+   * map
+   *
+   * @return a new enemy character instance with a random starting position
+   */
   public static Character spawnRandomEnemy() {
     Random random = new Random();
 

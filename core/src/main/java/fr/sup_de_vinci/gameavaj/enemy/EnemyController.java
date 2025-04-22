@@ -16,8 +16,22 @@ import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 import fr.sup_de_vinci.gameavaj.utils.Position;
 
+/**
+ * A controller responsible for deciding the movement logic of enemy characters
+ * Enemies move randomly on the map, avoiding backtracking when more than two
+ * directions are available
+ */
 public class EnemyController implements CharacterController {
 
+  /**
+   * Updates the enemy's state based on its current position and available
+   * directions
+   *
+   * @param current The current state of the enemy
+   * @param pos     The current render position of the enemy
+   * @return A new {@link State} if a movement decision is made, otherwise the
+   *         current state
+   */
   @Override
   public State update(State current, Vector2 pos) {
 

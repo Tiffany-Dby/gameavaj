@@ -11,8 +11,19 @@ import fr.sup_de_vinci.gameavaj.enums.Coord;
 import fr.sup_de_vinci.gameavaj.enums.Direction;
 import fr.sup_de_vinci.gameavaj.map.MapManager;
 
+/**
+ * Handles player input and determines the next state based on keyboard
+ * controls
+ */
 public class PlayerController implements CharacterController {
 
+  /**
+   * Updates the player's state based on keyboard input
+   *
+   * @param current The current state of the player
+   * @param pos     The player's current render position
+   * @return The next state for the player
+   */
   @Override
   public State update(State current, Vector2 pos) {
     Direction input = getPressedDirection();
@@ -28,6 +39,12 @@ public class PlayerController implements CharacterController {
     return current;
   }
 
+  /**
+   * Retrieves the direction based on the currently pressed arrow key
+   *
+   * @return The corresponding direction, or {@code Direction.NONE} if no input is
+   *         pressed
+   */
   private Direction getPressedDirection() {
     if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
       return Direction.LEFT;
